@@ -18,33 +18,36 @@ def save_data(request):
      if request.method == "POST":
           form =StudentRegistration(request.POST)
           if form.is_valid():
+           sid= request.POST.get('stuid')
            name= request.POST['name']
            email= request.POST['email']
            password= request.POST['password']
-           usr= User(name=name, email=email, password=password)
+           if(sid==''):
+            usr= User(name=name, email=email, password=password)
+           else:
+            usr= User(id=sid,name=name, email=email, password=password)
            usr.save()
            stud =User.objects.values()
-           print(stud)
+          #  print(stud)
            student_data =list(stud)
            return JsonResponse({'status':'Save',
            'student_data':student_data})
           else:
            return JsonResponse({'status':0})
 
+def delete_data(request):
+     if request.method == "POST":
+      id=request.POST.get('sid');
+      pi=User.objects.get(pk=id)
+      pi.delete();
+      return JsonResponse({'status':1})
+     else:
+      return JsonResponse({'status':0})
 
-def postFriend(request):
-    # request should be ajax and method should be POST.
-    if request.is_ajax and request.method == "POST":
-        # get the form data
-      form =StudentRegistration(request.POST)
-      if form.is_valid():
-            instance = form.save()
-          
-            ser_instance = serializers.serialize('json', [ instance, ])
-            # send to client side.
-            return JsonResponse({"instance": ser_instance}, status=200)
-      else:
-            # some form errors occured.
-            return JsonResponse({"error": form.errors}, status=400)
-    return JsonResponse({"error": ""}, status=400)
-   
+def edit_data(request):
+     if request.method == "POST":
+      id=request.POST.get('sid');
+      pi=User.objects.get(pk=id)
+      print(pi)
+      student_data={"id":pi.id,"name":pi.name,"email":pi.email,"password":pi.password}
+      return JsonResponse(student_data)
