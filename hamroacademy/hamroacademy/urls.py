@@ -21,6 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home,name='home'),
     path('save/',views.save_data,name='save'),
-    # path('list/',views.postFriend,name='list'),
-   path('post/ajax/friend', views.postFriend, name = "post_friend"),
+    path('delete/',views.delete_data,name = "delete"),
+    path('edit/',views.edit_data,name = "edit"),
 ]

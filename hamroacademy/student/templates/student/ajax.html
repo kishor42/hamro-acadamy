@@ -1,7 +1,7 @@
 <script>
         $('document').ready(function () {
-          debugger;
-          GetPagesLists();
+          toastr.success("Welcome to this Page");
+        
 
        });
     $("#btnsave").click(function() {
@@ -14,6 +14,7 @@
     {
       debugger;
        es= "";
+       let sid= $("#stuid").val();
        let nm= $("#nameid").val();
     
        let em= $("#emailid").val();
@@ -30,7 +31,7 @@
         console.log("Enter Password");
      }
      else{
-        datas={name:nm,email:em,password:pw,csrfmiddlewaretoken:csr };
+        datas={stuid:sid,name:nm,email:em,password:pw,csrfmiddlewaretoken:csr };
       $.ajax({
           url:"{% url 'save' %}",
           method:"POST",
@@ -47,7 +48,7 @@
                 es += '<td>' + x[i].name + '</td>';
                   es += '<td>' + x[i].email + '</td> ';
                   es += '<td>' + x[i].password + '</td> ';
-                  es += "<td><input type='button' value='Edit' class='btn btn-warning btn-sm' data-sid=" + x[i].id +"/> <input type='button' value='Delete' class='btn btn-danger btn-sm' data-sid="+ x[i].id+"/></td>" ;
+                  es += "<td><input type='button' value='Edit' class='btn btn-warning btn-sm btn-edit' data-sid=" + x[i].id +"> <input type='button' value='Delete' class='btn btn-danger btn-sm btn-del' data-sid="+ x[i].id+"></td>" ;
                   es +="</tr>";
          
              }  
@@ -56,39 +57,61 @@
      
            }
            if(data.status==0){
-               alert("Unable to save Data and Correct Email");
+            toastr.error("Unable to insert data!");
                
            }
           },
       });
     }
   }
-    // function GetPagesLists(){
-    //   debugger;
-    //     $.ajax({
-    //       url:"{% url 'post_friend' %}",
-    //       method:"POST",
-    //       data: serializedData,
-    //       success : function (data) {
-    //         var es = '';
-    //                  var i = 1;
-    //                  $.each(data, function (key, item) {
-    //                   debugger;
-    //                      es += '<tr><td>' + x[i].id + '</td>';
-    //                      es += '<td>'+x[i].name+'</td>';
-    //                      es += '<td>' +x[i].email+ '</td>';
-    //                      es += '<td>'  +x[i].password+ '</td> '; 
-    //                      es += '</tr>'; 
-    //                    i++;
-    //                });
-    //                $('#tbody').html(es);
-        
-
-    //             },
-
-    //         });
-    //     }
     
+  $("#tbody").on("click",".btn-del",function() {
+    debugger;
+   let id =$(this).attr("data-sid");
+   let csr=$("input[name=csrfmiddlewaretoken").val();
 
+   mydata={sid:id,csrfmiddlewaretoken: csr };
+   mythis=this;
+   $.ajax({
+     url:"{% url 'delete' %}",
+     method: "POST",
+     data: mydata,
+     success: function(data){
+      if(data.status ==1){
+        toastr.success("Data Deleted Successfully");
+        $(mythis).closest('tr').fadeOut();
+      }
+      if(data.status==0){
+       toastr.error("Unable to Delete data!");
+          
+      }
+     },
+   });
+  });
+
+
+
+  $("#tbody").on("click",".btn-edit",function() {
+  
+  
+  let id =$(this).attr("data-sid");
+ let csr=$("input[name=csrfmiddlewaretoken").val();
+
+ mydata={sid:id,csrfmiddlewaretoken: csr };
+
+ $.ajax({
+   url:"{% url 'edit' %}",
+   method: "POST",
+   data: mydata,
+   dataType:"json",
+   success: function(data){
+     debugger;
+   $("#stuid").val(data.id);
+   $("#nameid").val(data.name);
+   $("#emailid").val(data.email);
+   $("#passwordid").val(data.password);
+   },
+ });
+});
 
 </script>
