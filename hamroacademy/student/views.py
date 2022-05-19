@@ -4,9 +4,10 @@ from .forms import StudentRegistration
 from .models import User
 from django.http import JsonResponse
 from django.core import serializers
-# from django.views.decorators.csrf import csrf_exempt
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 # # Create your views here.
-# @csrf_exempt
+@csrf_exempt
 
 def home(request):
      form = StudentRegistration()
@@ -51,3 +52,17 @@ def edit_data(request):
       print(pi)
       student_data={"id":pi.id,"name":pi.name,"email":pi.email,"password":pi.password}
       return JsonResponse(student_data)
+
+
+def login (request):
+ return render(request,'student/login.html')
+
+
+def list_data(request):
+    if request.method == "GET":
+          stud =User.objects.all()
+          #print(stud)
+          student_data =serializers.serialize('json',stud)
+          return JsonResponse(student_data,safe=False)
+    return JsonResponse({'message':'wrongvalidation'})
+   
