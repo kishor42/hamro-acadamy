@@ -26,4 +26,5 @@ urlpatterns = [
     path('edit/',views.edit_data,name = "edit"),
     path('list/',views.list_data,name = "listdata"),
     path('login/',views.login, name='login' ),
+    path('design/',views.design, name='design' ),
 ]
