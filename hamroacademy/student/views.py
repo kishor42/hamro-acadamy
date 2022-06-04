@@ -58,6 +58,10 @@ def login (request):
  return render(request,'student/login.html')
 
 
+def design (request):
+ return render(request,'student/design.html')
+
+
 def list_data(request):
     if request.method == "GET":
           stud =User.objects.all()
