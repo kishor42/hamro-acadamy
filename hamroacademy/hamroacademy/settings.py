@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'student',
     'teacher',
+    'crispy_forms',
     
 ]
 
@@ -57,7 +59,12 @@ ROOT_URLCONF = 'hamroacademy.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            './student/template/student',
+                  './teacher/template/teacher',            
+        os.path.join(BASE_DIR, 'template') ,
+
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,14 +94,12 @@ WSGI_APPLICATION = 'hamroacademy.wsgi.application'
 DATABASES = {
 
     'default': {
-
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Student',
-        'USER': 'postgres',
-        'PASSWORD': 'serveradmin',
-        'HOST': 'localhost',
-        'PORT': '',
-
+ 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'HAMRO_DB', 
+        'USER': 'postgres', 
+        'PASSWORD': 'admin',
+        'HOST': 'localhost', 
+        'PORT': '5432',
     }
 
 }
