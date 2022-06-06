@@ -1,0 +1,139 @@
+<script>
+    $('document').ready(function () {
+      toastr.success("Welcome to this Table  Page");
+      StudentList();
+
+   });
+   
+ 
+function  StudentList(){
+
+    $.ajax({
+           url:"{% url 'listdata' %}",
+           method: 'GET',
+           dataType: 'json',
+           success : function (data)
+            {   var es = '';
+                var obj= jQuery.parseJSON(data);
+                    var i = 1;
+                    debugger;
+                    $.each(obj, function (key, item) {
+                        es += '<tr>';
+
+                        es += '<td>' + item.pk + '</td>';
+                        es += '<td>' + item.fields.name + '</td>';
+                        es += '<td>' + item.fields.email + '</td>';
+                        es += '<td>' + item.fields.password + '</td>';
+                        
+                        es += "<td><input type='button' value='Edit' class='btn btn-warning btn-sm btn-edit' data-sid=" + item.pk +"> <input type='button' value='Delete' class='btn btn-danger btn-sm '  data-toggle='modal' data-target='#deleteee' onclick='Delete(" + item.pk + ");'></td>" ;
+                     es += '</tr>';
+
+                    });
+             
+                 $("#tbodys").html(es);       
+            },
+               error: function () {
+
+                   toastr.error("Unable to retreive data");
+               }
+           });
+       }
+       function Delete(pk) {
+            $('#deleteid').val(pk);
+
+        }
+      function DeleteStudent()  {
+    debugger;
+    var id = $('#deleteid').val();
+   mydata={sid:id,csrfmiddlewaretoken: '{{ csrf_token }}' };
+   mythis=this;
+   $.ajax({
+     url:"{% url 'delete' %}",
+     method: "POST",
+     data: mydata,
+     success: function(data){
+      if(data.status ==1){
+        toastr.success("Data Deleted Successfully");
+        StudentList();
+      }
+      if(data.status==0){
+       toastr.error("Unable to Delete data!");
+          
+      }
+     },
+   });
+  }
+
+  $("#tbodys").on("click",".btn-edit",function() {
+  
+  
+  let id =$(this).attr("data-sid");
+
+ mydata={sid:id,csrfmiddlewaretoken: '{{ csrf_token }}' };
+
+ $.ajax({
+   url:"{% url 'edit' %}",
+   method: "POST",
+   data: mydata,
+   dataType:"json",
+   success: function(data){
+     debugger;
+   $("#stuid").val(data.id);
+   $("#nameid").val(data.name);
+   $("#emailid").val(data.email);
+   $("#passwordid").val(data.password);
+   },
+ });
+});
+
+function Insert()
+    {
+      debugger;
+       es= "";
+       let sid= $("#stuid").val();
+       let nm= $("#nameid").val();
+    
+       let em= $("#emailid").val();
+      let pw= $("#passwordid").val();
+   
+      if(nm == ""){
+        console.log("Enter Name");
+       }
+     else if(em==""){
+        console.log("Enter Email");
+
+     }
+     else if (pw == ""){
+        console.log("Enter Password");
+     }
+     else{
+        datas={stuid:sid,name:nm,email:em,password:pw,csrfmiddlewaretoken:'{{ csrf_token }}'};
+      $.ajax({
+          url:"{% url 'save' %}",
+          method:"POST",
+          data: datas,
+          success : function (data)
+          {
+            
+           if(data.status =="Save"){
+        
+            toastr.success("Data Saved Successfully!");
+            StudentList();
+            reset()
+     
+           }
+           if(data.status==0){
+            toastr.error("Unable to insert data!");
+               
+           }
+          },
+      });
+    }
+  }
+         function reset(){
+            $("#stuid").val("");
+   $("#nameid").val("");
+   $("#emailid").val("");
+   $("#passwordid").val("");
+         }
+  </script>
