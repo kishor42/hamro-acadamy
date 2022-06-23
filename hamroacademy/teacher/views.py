@@ -44,6 +44,9 @@ def login_user(request):
 
 def home(request):
     return render (request,'home.html')  
+
+def base(request):
+    return render (request,'base.html')  
 	
 def logout_user(request):
 	logout(request)
