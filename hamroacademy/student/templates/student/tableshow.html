@@ -107,7 +107,7 @@ function Insert()
         console.log("Enter Password");
      }
      else{
-        datas={stuid:sid,name:nm,email:em,password:pw,csrfmiddlewaretoken:'{{ csrf_token }}'};
+        datas={stuid:sid,namme:nm,emmail:em,paassword:pw,csrfmiddlewaretoken:'{{ csrf_token }}'};
       $.ajax({
           url:"{% url 'save' %}",
           method:"POST",

@@ -17,8 +17,6 @@ def home(request):
 
 def save_data(request):
      if request.method == "POST":
-          form =StudentRegistration(request.POST)
-          if form.is_valid():
            sid= request.POST.get('stuid')
            name= request.POST['name']
            email= request.POST['email']
@@ -29,11 +27,10 @@ def save_data(request):
             usr= User(id=sid,name=name, email=email, password=password)
            usr.save()
            stud =User.objects.values()
-          #  print(stud)
            student_data =list(stud)
            return JsonResponse({'status':'Save',
            'student_data':student_data})
-          else:
+     else:
            return JsonResponse({'status':0})
 
 def delete_data(request):

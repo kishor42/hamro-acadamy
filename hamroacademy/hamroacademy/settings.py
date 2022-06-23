@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'administration',
     'student',
     'teacher',
     'crispy_forms',
@@ -95,10 +96,10 @@ DATABASES = {
 
     'default': {
  'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'HAMRO_DB', 
-        'USER': 'postgres', 
-        'PASSWORD': 'admin',
-        'HOST': 'localhost', 
+        'NAME': 'd1kfsth9bhdif3', 
+        'USER': 'lfkrieqxbjjtsn', 
+        'PASSWORD':'46d9edf5dab7914573d873a1e8967ab8fd3b605b4b9ed3770f5130473190c98d',
+        'HOST': 'ec2-44-199-143-43.compute-1.amazonaws.com', 
         'PORT': '5432',
     }
 
